@@ -1,22 +1,26 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { saveEntery } from "../redux/todoSlicer";
+import { saveEntery, settingState, updateValue } from "../redux/todoSlicer";
+import TodoList from "./todoList";
 
 const Input = () => {
-  const [value, setvalue] = useState("");
   const todo = useSelector((state) => state.todone.todos);
+  const settoogle = useSelector((state) => state.todone.settoogle);
+  const setGetValue = useSelector((state) => state.todone.setGetValue);
   const dispatch = useDispatch();
 
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(
       saveEntery({
-        text: value,
+        text: setGetValue,
         id: Math.ceil(Math.random() * 1122),
       })
     );
-    console.log(todo);
+  };
+  const changeHandler = (e) => {
+    dispatch(settingState(e.target.value));
   };
 
   return (
@@ -24,9 +28,17 @@ const Input = () => {
       <div>
         <h1> Input</h1>
 
-        <input value={value} onChange={(e) => setvalue(e.target.value)} />
-        <button onClick={submitHandler}>ADD TO LIST</button>
+        <input value={setGetValue} onChange={changeHandler} />
+
+        {settoogle ? (
+          <button onClick={submitHandler}>ADD TO LIST</button>
+        ) : (
+          <button onClick={() => dispatch(updateValue(todo))}>
+            Update Item
+          </button>
+        )}
       </div>
+      <TodoList />
     </>
   );
 };

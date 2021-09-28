@@ -1,16 +1,18 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { deleteAll } from "../redux/todoSlicer";
 
-const TodoList = () => {
-  const todo = useSelector((state) => state.todone.todos);
+import TodoAdd from "./TodoAdd";
 
+const TodoList = (props) => {
+  const dispatch = useDispatch();
+  // console.log(props.setToggleSubmit);
   return (
     <div>
-      <p>
-        {todo.map((todo) => (
-          <p>{todo.text}</p>
-        ))}
-      </p>
+      <TodoAdd />
+      <div>
+        <button onClick={() => dispatch(deleteAll())}>Delete All</button>
+      </div>
     </div>
   );
 };
